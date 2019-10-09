@@ -60,20 +60,11 @@
 				
 				if(file_exists($upload_file))
 				{
-					echo "<b>Τα παρακάτω αρχεία υπάρχουν ήδη:</b><br/>";
-					echo $file_name."<br/>";
-							
-					echo "<hr><b>Θέλετε να αντικατασταθούν;</b><br>";
-					echo "&nbsp;<button id='btnYes' class='btn btn-danger' onclick='overwriteFiles()'>Ναι</button>&nbsp;&nbsp;&nbsp;&nbsp;<button id='btnNo' class='btn btn-success' >Όχι</button>";
-					?>
-					<script>
-					function overwriteFiles() {
-						<?php move_uploaded_file($_FILES["files"]["tmp_name"][$key], $upload_file); ?>
-					}
-					</script>
-					<?php
-				}
-				else
+					
+					array_push($errors, $file_name);
+					//echo $file_name."<br/>";			
+					
+				} else
 				{
 					move_uploaded_file($_FILES["files"]["tmp_name"][$key], $upload_file);
 					$query = "INSERT INTO user_files(file_path, file_name, date, aem, subject_id) VALUES ('/grapta/uploads', '".$newFileName."', curdate(), $aem, $sender)";
@@ -92,9 +83,29 @@
 		$count = count($errors);
 		
 		if($count != 0){
+			echo "<b>Τα παρακάτω αρχεία υπάρχουν ήδη:</b><br/>";
 			foreach($errors as $error){
 				echo $error."<br/>";
 			}
+			echo "<hr><b>Θέλετε να αντικατασταθούν;</b><br>";
+			echo "&nbsp;<button id='btnYes' class='btn btn-danger' onclick='overwriteFiles()'>Ναι</button>&nbsp;&nbsp;&nbsp;&nbsp;<button id='btnNo' class='btn btn-success' >Όχι</button>";
+
+			?>
+			<script>
+			
+			document.getElementById('btnYes').onclick = function() {overwriteFiles()};
+
+			function overwriteFiles() {
+				<?php
+				foreach($_FILES["files"]["tmp_name"] as $key=>$tmp_name)
+				{
+					move_uploaded_file($_FILES["files"]["tmp_name"][$key], $upload_file);
+				}
+				
+				?>
+			}
+			</script>
+			<?php
 		}	
 	
 	} else {
