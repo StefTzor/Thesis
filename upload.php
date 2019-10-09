@@ -1,0 +1,91 @@
+<?php
+	require_once("load.php");
+	if(isset($_POST["btnSubmit"])){		
+		$errors = array();
+		
+		$extension = array("pdf");
+		
+		$bytes = 1024;
+		$allowedKB = 1500;
+		$totalBytes = $allowedKB * $bytes;
+		
+		if(isset($_FILES["files"])==false)
+		{
+			echo "<b>Δεν έχετε επιλέξει αρχεία</b>";
+			return;
+		}
+		
+		$connect = new mysqli(DB_HOST, DB_USER, DB_PASS, DB_NAME);	
+		
+		foreach($_FILES["files"]["tmp_name"] as $key=>$tmp_name)
+		{
+			$uploadThisFile = true;
+			
+			$file_name=$_FILES["files"]["name"][$key];
+			$file_tmp=$_FILES["files"]["tmp_name"][$key];
+			
+			$ext=pathinfo($file_name,PATHINFO_EXTENSION);
+
+			if(!in_array(strtolower($ext),$extension))
+			{
+				array_push($errors, "Ο τύπος του αρχείο είναι λάθος. ".$file_name);
+				$uploadThisFile = false;
+			}				
+			
+			if($_FILES["files"]["size"][$key] > $totalBytes){
+				array_push($errors, "Το μέγεθος κάθε αρχείου πρέπει να είναι λιγότερο από 1.5MB. ".$file_name);
+				$uploadThisFile = false;
+			}
+			
+			if(file_exists("uploads/".$_FILES["files"]["name"][$key]))
+			{
+				array_push($errors, "Το αρχέιο υπάρχει ήδη. ". $file_name);
+				$uploadThisFile = false;
+			}
+			
+			if($uploadThisFile){
+				if(isset($_POST['sender'])) $sender=$_POST['sender'];
+				$date = date("Y-m-d");
+				$filename = basename($file_name,$ext);
+				$newFileName = $sender."_".$date."_".$filename.$ext;
+				$aem = (int)basename($file_name,".$ext"); 
+				
+				//$thumb = basename($file_name,".$ext");
+				//$thumb = $date."_".$thumb.".jpg";
+				//$thumb = dirname(__FILE__) . '/uploads/' . $thumb;
+
+				
+
+				$upload_file = dirname(__FILE__) . '/uploads/' . $newFileName;
+				
+				if(file_exists($upload_file))
+				{
+					array_push($errors, "To αρχείο" . " '" . $file_name . "' " . "υπάρχει ήδη");			
+				}
+				else
+				{
+					move_uploaded_file($_FILES["files"]["tmp_name"][$key], $upload_file);
+					$query = "INSERT INTO user_files(file_path, file_name, date, aem, subject_id) VALUES ('/grapta/uploads', '".$newFileName."', curdate(), $aem, $sender)";
+					mysqli_query($connect, $query);	
+				}
+				
+				//execute imageMagick's 'convert', setting the color space to RGB
+    			//This will create a jpg having the widthg of 200PX
+				//exec("convert ".{$upload_file}." -colorspace RGB -geometry 200 $thumb");
+						
+			}
+		}
+		
+		mysqli_close($connect);
+		
+		$count = count($errors);
+		
+		if($count != 0){
+			foreach($errors as $error){
+				echo $error."<br/>";
+			}
+		}		
+	} else {
+		include( 'login.php' );
+	}
+?>
