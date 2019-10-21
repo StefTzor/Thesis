@@ -1,9 +1,9 @@
 <?php
 require_once('load.php');
 
-// Handle logins
+// Handle search
 if($_SERVER["REQUEST_METHOD"] == "POST") {
-    $login_status = $login->verify_login($_POST);
+    $search_status = $login->search($_POST);
 }
     
 // Verify session
@@ -21,7 +21,7 @@ if ( $login->verify_session() ) {
                 <?php
                 $subjects = $db->query("SELECT * FROM subjects ORDER BY name asc");
                 foreach ($subjects as $result) {             
-                    ?> <option value = "<?php $result->id ?>"><?php echo $result->name ?></option> <?php
+                    ?> <option value = "<?php echo $result->id ?>"><?php echo $result->name ?></option> <?php
                 }
                 ?>
             </select>
