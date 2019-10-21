@@ -17,6 +17,7 @@ if ( $login->verify_session() ) {
         include( 'subjects.php' );
     } elseif ( $userType == 'professor' ) {
         include( 'home.php' );
+        include( 'search.php' );
         include( 'subjects.php' );
     } elseif ( $userType == 'not_verified' ) {
         include('header.php'); ?>

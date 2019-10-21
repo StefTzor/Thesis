@@ -39,7 +39,6 @@ if($_SERVER["REQUEST_METHOD"] == "POST") {
                     method = 'GET',
                     overrideMimeType = 'application/json',
                     url = 'fetch_reg.php';        // ADD THE URL OF THE FILE.
-                    console.log(xhr);
 
                 xhr.onreadystatechange = function () {
                     if (xhr.readyState === XMLHttpRequest.DONE && xhr.status === 200) {

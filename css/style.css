@@ -8,7 +8,12 @@ body,html {
 .wrapper {
     display: block;
     max-width: 500px;
-    margin: 10% auto;
+    margin: 8% auto;
+}
+
+.search_wrapper {
+    line-height: 1.5;
+    text-align: center;
 }
 
 .text-center {
@@ -28,20 +33,59 @@ body,html {
     border: 1px solid #ccc;
 }
 
+.select{
+    font-size: 1.25rem;
+    border: 1px solid #ccc;
+    display: inline-block;
+    vertical-align: middle;
+    margin-left: 1%;
+    margin-bottom: 2%;
+    -ms-box-sizing: content-box;
+    -moz-box-sizing: content-box;
+    -webkit-box-sizing: content-box; 
+    box-sizing: content-box;
+}
+
 select:required:invalid {
-     color: gray;
+    color: gray;
 }
 option[value=""][disabled] {
-    display: none;
+   display: none;
 }
 option {
-    color: black;
+   color: black;
+   font-size: 1.1rem;
+}
+
+#search_aem{
+    height: 27px;
+    width: 6%;
+    text-indent: 3px;
+}
+
+#search_subject{
+    width: 21%; 
+}
+
+#search_year{
+    width: 6%;
+}
+
+#search_exam_period{
+    width: 16%;
 }
 
 .submit {
     text-transform: uppercase;
     background: #000;
     color: #fff;
+}
+
+.search {
+    display: inline-block;
+    vertical-align: middle;
+    width: 8%;
+    font-size: 1.25rem;
 }
 
 .message {
@@ -92,4 +136,15 @@ option {
 }
 ::placeholder { /* Recent browsers */
     text-transform: none;
+}
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+    /* display: none; <- Crashes Chrome on hover */
+    -webkit-appearance: none;
+    margin: 0; /* <-- Apparently some margin are still there even though it's hidden */
+}
+
+input[type=number] {
+    -moz-appearance:textfield; /* Firefox */
 }

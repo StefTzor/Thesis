@@ -322,6 +322,20 @@ class Login {
         return false;
     }
 
+    private function aem_student_exists($where_value, $where_field = 'aem') {
+        $user = $this->db->get_results("
+            SELECT * FROM students 
+            WHERE {$where_field} = :where_value", 
+            ['where_value'=>$where_value]
+        );
+        
+        if ( false !== $user ) {
+            return $user[0];
+        }
+        
+        return false;
+    }
+
     private function email_exists($where_value, $where_field = 'email') {
         $user = $this->db->get_results("
             SELECT * FROM users 
@@ -371,6 +385,39 @@ class Login {
         ChromePhp::log('Λάθος στοιχεία');
         return false;
     }
+
+    /*public function search($post) {
+        // Required fields
+        $required = array( 'search_aem', 'search_subject' );
+        
+        foreach ( $required as $key ) {
+            if ( empty( $post[$key] ) ) {
+                return array('status'=>0,'message'=>sprintf('Παρακαλώ εισάγετε τα στοιχεία σας %s', $key));
+            }
+        }
+
+        $search_aem = $post['search_aem'];
+        $search_subject = $post['search_subject'];
+        if ( $post['search_year'] ) {
+            $search_year = $post['search_year'];
+        }
+        if ( $post['search_exam_period'] ) {
+            $search_exam_period = $post['search_exam_period'];
+        }
+
+        // Check if aem exists
+        if ( false !== $this->aem_student_exists( $search_aem] ) ) {
+            return array('status'=>0,'message'=>'Το Α.Ε.Μ. δεν υπάρχει');
+        }
+
+        $db->get_results("
+            SELECT * FROM students 
+            WHERE {$where_field} = :where_value", 
+            ['where_value'=>$where_value]
+        );
+
+        return array('status'=>0,'message'=>'Παρουσιάστηκε ένα άγνωστο σφάλμα');
+    }*/
     
 }
 

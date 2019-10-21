@@ -56,8 +56,10 @@
 
 				
 
-				$upload_file = dirname(__FILE__) . '/uploads/' . $newFileName;
+				$upload_file = dirname(__FILE__) . '/uploads/' . $sender . '/' . $newFileName;
+				$file_path_db = '/grapta/uploads/' .  $sender;
 				
+
 				if(file_exists($upload_file))
 				{
 					array_push($errors, "To αρχείο" . " '" . $file_name . "' " . "υπάρχει ήδη");			
@@ -65,7 +67,7 @@
 				else
 				{
 					move_uploaded_file($_FILES["files"]["tmp_name"][$key], $upload_file);
-					$query = "INSERT INTO user_files(file_path, file_name, date, aem, subject_id) VALUES ('/grapta/uploads', '".$newFileName."', curdate(), $aem, $sender)";
+					$query = "INSERT INTO user_files(file_path, file_name, date, aem, subject_id) VALUES ('$file_path_db', '".$newFileName."', curdate(), $aem, $sender)";
 					mysqli_query($connect, $query);	
 				}
 				

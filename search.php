@@ -13,29 +13,55 @@ if ( $login->verify_session() ) {
     
     include('header.php'); ?>
 
-    <div class="wrapper">
-        <?php
-            $subjects = $db->query("SELECT * FROM subjects");
-            echo "<table><tbody><tr><th>Εξάμηνο</th><th>Μάθημα</th></tr>\r\n";
-            foreach ($subjects as $result) {
-                echo "<tr data-href='$result->id.php?subject=$result->name'>\r\n";
-                echo "<td>" . $result->semester . "</td>\r\n";
-                echo "<td>" . $result->name . "</td>\r\n";
-                echo "</tr>\r\n";
-                ?>
-                <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
-                <script>
-                    $(document).ready(function(){
-                        $('table tr').click(function(){
-                            window.location = $(this).data('href');
-                            return false;
-                        });
-                    });
-                </script>
+    <div class="search_wrapper">    
+        <form action="" method="post">
+            <input type="number" class="select" id="search_aem" name="search_aem" placeholder="Α.Ε.Μ." pattern="[0-9]" min="1" max="99999" required>
+            <select class="select" id="search_subject" name="search_subject" required>
+                <option value = "" disabled hidden selected>Μάθημα</option>
                 <?php
-            }
-            echo "</tbody></table>\r\n";
-            ?>
+                $subjects = $db->query("SELECT * FROM subjects ORDER BY name asc");
+                foreach ($subjects as $result) {             
+                    ?> <option value = "<?php $result->id ?>"><?php echo $result->name ?></option> <?php
+                }
+                ?>
+            </select>
+            <select class="select" id="search_year" name="search_year">
+                <option value = "" disabled hidden selected>Έτος</option>
+            </select>
+            <select class="select" id="search_exam_period" name="search_exam_period">
+                <option value = "" disabled hidden selected>Εξεταστική Περίοδος</option>
+            </select>
+            
+            <!--<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+            <script>
+                window.onload = populateSelect();
+                function populateSelect() {
+                    // CREATE AN XMLHttpRequest OBJECT, WITH GET METHOD.
+                    var xhr = new XMLHttpRequest(), 
+                        method = 'GET',
+                        overrideMimeType = 'application/json',
+                        url = 'fetch_reg.php';        // ADD THE URL OF THE FILE.
+                    xhr.onreadystatechange = function () {
+                        if (xhr.readyState === XMLHttpRequest.DONE && xhr.status === 200) {
+                        
+                            // PARSE JSON DATA.
+                            var reg_data = JSON.parse(xhr.responseText);
+                            var ele = document.getElementById('registered');
+                            for (var i = 0; i < reg_data.length; i++) {
+                                // BIND DATA TO <select> ELEMENT.
+                                ele.innerHTML = ele.innerHTML +
+                                    '<option value="' + reg_data[i].registered + '">' + reg_data[i].registered + '</option>';
+                            }
+                        }
+                    };
+                    xhr.open(method, url, true);
+                    xhr.send();
+                }
+            </script>
+            -->
+
+            <br><input type="submit" class="search" value="Αναζήτηση">
+        </form>
     </div>
     <?php include('footer.php');
 } else {
