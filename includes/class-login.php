@@ -322,20 +322,6 @@ class Login {
         return false;
     }
 
-    private function aem_student_exists($where_value, $where_field = 'aem') {
-        $user = $this->db->get_results("
-            SELECT * FROM students 
-            WHERE {$where_field} = :where_value", 
-            ['where_value'=>$where_value]
-        );
-        
-        if ( false !== $user ) {
-            return $user[0];
-        }
-        
-        return false;
-    }
-
     private function email_exists($where_value, $where_field = 'email') {
         $user = $this->db->get_results("
             SELECT * FROM users 
@@ -384,79 +370,6 @@ class Login {
 
         ChromePhp::log('Λάθος στοιχεία');
         return false;
-    }
-
-    public function search($post) {
-
-        $search_aem = $post['search_aem'];
-        ChromePhp::log($search_aem);
-        $search_subject = $post['search_subject'];
-        ChromePhp::log($search_subject);
-        if ( $post['search_year'] ) {
-            $search_year = $post['search_year'];
-        }
-        ChromePhp::log($search_year);
-        if ( $post['search_exam_period'] ) {
-            $search_exam_period = $post['search_exam_period'];
-        }
-        ChromePhp::log($search_exam_period);
-
-        // Check if aem exists
-        if ( false == $this->aem_student_exists( $search_aem ) ) {
-            ChromePhp::log('Here');
-            return array('status'=>0,'message'=>'Το Α.Ε.Μ. δεν υπάρχει');
-        }
-
-        // Create if they don't exist
-        $search = $this->db->query("SELECT user_files.file_path, user_files.file_name, user_files.date, students.aem, students.last_name, students.first_name
-        FROM user_files 
-        INNER JOIN students ON user_files.aem=students.aem
-        WHERE user_files.aem='$search_aem'
-        AND user_files.subject_id='$search_subject'
-        ORDER BY date desc,students.aem desc");
-        
-        echo "<th>Α.Ε.Μ.</th><th>Επώνυμο</th><th>Όνομα</th><th>Ημερομηνία</th></tr>\r\n";
-        foreach ($search as $result) {
-            $url = $result["file_path"]."/".$result["file_name"];
-			$file_name = $result["file_name"];
-
-			$file_date = $result["date"];
-			$file_date = formatToGreekDate($file_date);
-								
-			$student_aem = $result["aem"];
-			$student_last_name = $result["last_name"];
-			$student_first_name = $result["first_name"];
-			echo "<tr data-href=$url>\r\n";
-            echo "<td>" . $student_aem . "</td>\r\n";
-			echo "<td>" . $student_last_name . "</td>\r\n";
-			echo "<td>" . $student_first_name . "</td>\r\n";
-			echo "<td>" . $file_date . "</td>\r\n";
-            echo "</tr>\r\n";
-            ?>
-            <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
-            <script>
-            	$(document).ready(function(){
-            		$('table tr').click(function(){
-            			window.location = $(this).data('href');
-            			return false;
-            		});
-            	});
-            </script>
-            <?php
-        }
-
-        ChromePhp::log('Error');
-        return array('status'=>0,'message'=>'Παρουσιάστηκε ένα άγνωστο σφάλμα');
-    }
-
-    function formatToGreekDate($date){
-        //Expected date format yyyy-mm-dd hh:MM:ss
-        $greekMonths = array('Ιανουάριος','Φεβρουάριος','Μάρτιος','Απρίλίος','Μάιος','Ιούνιος','Ιούλιος','Αύγουστος','Σεπτέμβριος','Οκτώβριος','Νοέμβριος','Δεκέμβριος');
-    
-        $time = strtotime($date);
-        $newformat = date('Y-m-d',$time);
-
-        return $greekMonths[date('m', strtotime($newformat))-1]. ' '. date('Y', strtotime($newformat));
     }
     
 }

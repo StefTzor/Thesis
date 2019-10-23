@@ -1,10 +1,5 @@
 <?php
 require_once('load.php');
-
-// Handle search
-if($_SERVER["REQUEST_METHOD"] == "POST") {
-    $search_status = $login->search($_POST);
-}
     
 // Verify session
 if ( $login->verify_session() ) {
@@ -14,7 +9,7 @@ if ( $login->verify_session() ) {
     include('header.php'); ?>
 
     <div class="search_wrapper">    
-        <form action="" method="post">
+        <form method="post" action="search_result.php">
             <input type="number" class="select" id="search_aem" name="search_aem" placeholder="Α.Ε.Μ." pattern="[0-9]" min="1" max="99999" required>
             <select class="select" id="search_subject" name="search_subject" required>
                 <option value = "" disabled hidden selected>Μάθημα</option>
@@ -60,7 +55,7 @@ if ( $login->verify_session() ) {
             </script>
             -->
 
-            <br><input type="submit" class="search" value="Αναζήτηση">
+            <br><input type="submit" class="search" name="btnSearch" value="Αναζήτηση">
         </form>
     </div>
     <?php include('footer.php');
