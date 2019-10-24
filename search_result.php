@@ -68,8 +68,6 @@
 <?php
     require_once("load.php");
 	if(isset($_POST["btnSearch"])){
-
-        ChromePhp::log($_POST);
     
         function __construct() {
         global $db;
@@ -78,7 +76,6 @@
         
         //$this->db = $db;
         }
-        ChromePhp::log($db);
 
         function aem_student_exists($where_value, $where_field = 'aem') {
             $search = $db->get_results("
@@ -105,6 +102,10 @@
         }
         
         $search_aem = $_POST['search_aem'];
+        if ( !is_null($_POST['aem_to_search']) )
+        {
+            $search_aem = $_POST['aem_to_search'];
+        }
         $search_subject = $_POST['search_subject'];
         if ( $_POST['search_year'] ) {
             $search_year = $_POST['search_year'];
@@ -131,7 +132,6 @@
         WHERE user_files.aem='$search_aem'
         AND user_files.subject_id='$search_subject'
         ORDER BY date DESC,students.aem DESC");
-        ChromePhp::log($search);
 
         ?>
         <a href="index.php" class="btn btn-info">Μαθήματα</a>
@@ -144,7 +144,6 @@
                     <?php
                     foreach ($search as $result) {
                         $url = $result->file_path .  "/". $result->file_name;
-                        ChromePhp::log($result);
 
                         $file_name = $result->file_name;
                     
@@ -154,9 +153,7 @@
                         $student_aem = $result->aem;
                         $student_last_name = $result->last_name;
                         $student_first_name = $result->first_name;
-                        ChromePhp::log($student_aem);
-                        ChromePhp::log($student_last_name);
-                        ChromePhp::log($student_first_name);
+
                         echo "<tr data-href=$url>\r\n";
                         echo "<td>" . $student_aem . "</td>\r\n";
                         echo "<td>" . $student_last_name . "</td>\r\n";

@@ -5,12 +5,21 @@ require_once('load.php');
 if ( $login->verify_session() ) {
     $user = $login->user;
     $userType = $user->userType;
+
+    $aem_to_search = $user->aem;
     
     include('header.php'); ?>
 
     <div class="search_wrapper">    
         <form method="post" action="search_result.php">
-            <input type="number" class="select" id="search_aem" name="search_aem" placeholder="Α.Ε.Μ." pattern="[0-9]" min="1" max="99999" required>
+            <?php
+            if ( $userType == 'professor' )
+            {
+                ?><input type="number" class="select" id="search_aem" name="search_aem" placeholder="Α.Ε.Μ." pattern="[0-9]" min="1" max="99999" required><?php
+            } elseif ( $userType == 'student')
+            {
+                ?><input type='hidden' name='aem_to_search' value='<?php echo "$aem_to_search";?>'/> <?php
+            }?>
             <select class="select" id="search_subject" name="search_subject" required>
                 <option value = "" disabled hidden selected>Μάθημα</option>
                 <?php
@@ -26,34 +35,6 @@ if ( $login->verify_session() ) {
             <select class="select" id="search_exam_period" name="search_exam_period">
                 <option value = "" disabled hidden selected>Εξεταστική Περίοδος</option>
             </select>
-            
-            <!--<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
-            <script>
-                window.onload = populateSelect();
-                function populateSelect() {
-                    // CREATE AN XMLHttpRequest OBJECT, WITH GET METHOD.
-                    var xhr = new XMLHttpRequest(), 
-                        method = 'GET',
-                        overrideMimeType = 'application/json',
-                        url = 'fetch_reg.php';        // ADD THE URL OF THE FILE.
-                    xhr.onreadystatechange = function () {
-                        if (xhr.readyState === XMLHttpRequest.DONE && xhr.status === 200) {
-                        
-                            // PARSE JSON DATA.
-                            var reg_data = JSON.parse(xhr.responseText);
-                            var ele = document.getElementById('registered');
-                            for (var i = 0; i < reg_data.length; i++) {
-                                // BIND DATA TO <select> ELEMENT.
-                                ele.innerHTML = ele.innerHTML +
-                                    '<option value="' + reg_data[i].registered + '">' + reg_data[i].registered + '</option>';
-                            }
-                        }
-                    };
-                    xhr.open(method, url, true);
-                    xhr.send();
-                }
-            </script>
-            -->
 
             <br><input type="submit" class="search" name="btnSearch" value="Αναζήτηση">
         </form>
