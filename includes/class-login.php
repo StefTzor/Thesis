@@ -126,21 +126,23 @@ class Login {
             return array('status'=>0,'message'=>'Το Email υπάρχει ήδη');
         }
 
+        $professor_name = mb_strtoupper($post['name'], 'UTF-8');
         // Create if they don't exist
         $insert = $this->db->insert('users', 
             array(
-                'username'  =>  $post['username'], 
-                'password'  =>  password_hash($post['password'], PASSWORD_DEFAULT),
-                'email'     =>  $post['email'],
-                'userType'  =>  'not_verified', 
+                'username'          =>  $post['username'], 
+                'password'          =>  password_hash($post['password'], PASSWORD_DEFAULT),
+                'email'             =>  $post['email'],
+                'professor_name'    =>  $professor_name,
+                'userType'          =>  'not_verified', 
             )
         );
         
         if ( $insert == true ) {
-            return array('status'=>1,'message'=>'Account created successfully');
+            return array('status'=>1,'message'=>'Ο Λογαριασμός δημιουργήθηκε επιτυχώς');
         }
         
-        return array('status'=>0,'message'=>'An unknown error occurred.');
+        return array('status'=>0,'message'=>'Παρουσιάστηκε ένα άγνωστο σφάλμα');
     }
     
     public function lost_password($post) {

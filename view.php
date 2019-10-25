@@ -112,6 +112,7 @@
 					<?php 
 						require_once("load.php");
 						$connect = new mysqli(DB_HOST, DB_USER, DB_PASS, DB_NAME);
+						$connect->set_charset("utf8");
 						
 						$query = "SELECT * FROM user_files WHERE subject_id = '$sender' AND aem = '$aem'";
 						
@@ -119,20 +120,57 @@
 						
 						if(mysqli_num_rows($result) > 0)
 						{
+							?>
+							<table id="myTable">
+							<tbody>
+							<tr class="header">
+							<?php
+							echo "<th>Καθηγητής</th><th>Εξεταστική</th></tr>\r\n";
 							while($row = mysqli_fetch_assoc($result))
 							{
 								$url = $row["file_path"]."/".$row["file_name"];
 								$file_name = $row["file_name"];
+
 								$file_date = $row["date"];
-								$file_date = formatToGreekDate($file_date);
+								$file_date_month = strtotime($file_date);
+								$file_date_month = date('m',$file_date_month);
+								$file_date_year = strtotime($file_date);
+								$file_date_year = date('Y',$file_date_year);
+								//$file_date = formatToGreekDate($file_date);
+
+								if ( $file_date_month >= 1 && $file_date_month <= 4 )
+								{
+									$file_date = 'ΧΕΙΜ' . " - " . $file_date_year;
+								} elseif ( $file_date_month >= 5 && $file_date_month <= 8 )
+								{
+									$file_date = 'ΕΑΡ' . " - " . $file_date_year;
+								} elseif ( $file_date_month >= 9 && $file_date_month <= 12 )
+								{
+									$file_date = 'ΣΕΠΤΕΜΒΡΙΟΣ' . " - " . $file_date_year;
+								}
+								
+								
+								$professor_name = $row["professor_name"];
+								echo "<tr data-href=$url>\r\n";
+                				echo "<td>" . $professor_name . "</td>\r\n";
+								echo "<td>" . $file_date . "</td>\r\n";
+                				echo "</tr>\r\n";
 					?>
-								<!--<a href="<?php echo $url; ?>"><image src="<?php echo $url; ?>" class="images" /></a> -->
-								<!--<a href="<?php echo $url; ?>"><?php echo $file_name; ?><br></a> -->
-								<!--<iframe src="<?php echo $url; ?>" style="width:100%; height:500px;" frameborder="0"></iframe> -->
-								<h4><a href="<?php echo $url; ?>"><?php echo $file_date; ?><br></a></h4>
-								<iframe src="http://docs.google.com/gview?url=<?php echo $server_name.$url; ?>&embedded=true" style="width:100%; height:500px;" frameborder="0"></iframe>
+								<!--<a href="<?php echo $url; ?>"><?php echo $student_aem; ?> <?php echo $student_last_name; ?> <?php echo $student_first_name; ?> <?php echo $file_date; ?><br></a>-->
+								
+								<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+                				<script>
+                    				$(document).ready(function(){
+                        				$('table tr').click(function(){
+                            				window.location = $(this).data('href');
+                            				return false;
+                        				});
+                    				});
+                				</script>
+					
 					<?php
 							}
+							echo "</tbody></table>\r\n";
 						}
 						else
 						{

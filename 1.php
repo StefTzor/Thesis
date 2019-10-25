@@ -9,7 +9,8 @@ if($_SERVER["REQUEST_METHOD"] == "POST") {
 // Verify session
 if ( $login->verify_session() ) {
     $user = $login->user;
-    $userType = $user->userType;
+	$userType = $user->userType;
+	$professor_name = $user->professor_name;
     
     if ( $userType == 'student' )
     {
@@ -125,7 +126,8 @@ if ( $login->verify_session() ) {
 					<form method="post" enctype="multipart/form-data" name="formUploadFile" id="uploadForm" action="upload.php">
 						<div class="form-group">
 							<label for="exampleInputFile">Επιλέξτε τα αρχεία που θέλετε να ανεβάσετε:</label>
-							<input type='hidden' name='sender' value='<?php echo "$sender";?>'/> 
+							<input type='hidden' name='sender' value='<?php echo "$sender";?>'/>
+							<input type='hidden' name='professor_name' value='<?php echo $professor_name;?>'/>
 							<input type="file" id="exampleInputFile" name="files[]" multiple="multiple" accept="application/pdf" >
 							<p class="help-block"><span class="label label-info">Σημείωση:</span> Επιλέξτε μόνο αρχεία pdf με μέγεθος λιγότερο από 1.5MB</p>
 						</div>			

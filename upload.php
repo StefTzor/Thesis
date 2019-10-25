@@ -15,7 +15,8 @@
 			return;
 		}
 		
-		$connect = new mysqli(DB_HOST, DB_USER, DB_PASS, DB_NAME);	
+		$connect = new mysqli(DB_HOST, DB_USER, DB_PASS, DB_NAME);
+		$connect->set_charset("utf8mb4");	
 		
 		foreach($_FILES["files"]["tmp_name"] as $key=>$tmp_name)
 		{
@@ -45,6 +46,8 @@
 			
 			if($uploadThisFile){
 				if(isset($_POST['sender'])) $sender=$_POST['sender'];
+				if(isset($_POST['professor_name'])) $professor_name=$_POST['professor_name'];
+
 				$date = date("Y-m-d");
 				$filename = basename($file_name,$ext);
 				$newFileName = $sender."_".$date."_".$filename.$ext;
@@ -67,7 +70,7 @@
 				else
 				{
 					move_uploaded_file($_FILES["files"]["tmp_name"][$key], $upload_file);
-					$query = "INSERT INTO user_files(file_path, file_name, date, aem, subject_id) VALUES ('$file_path_db', '".$newFileName."', curdate(), $aem, $sender)";
+					$query = "INSERT INTO user_files(file_path, file_name, date, aem, subject_id, professor_name) VALUES ('$file_path_db', '".$newFileName."', curdate(), $aem, $sender, '$professor_name')";
 					mysqli_query($connect, $query);	
 				}
 				
