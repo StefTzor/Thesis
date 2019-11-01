@@ -49,13 +49,42 @@
 				if(isset($_POST['professor_name'])) $professor_name=$_POST['professor_name'];
 
 				$date = date("Y-m-d");
+				$date_month = strtotime($date);
+				$date_month = date('m',$date_month);
+				$date_year = strtotime($date);
+				$date_year = date('Y',$date_year);
+
 				$filename = basename($file_name,$ext);
 				$newFileName = $sender."_".$date."_".$filename.$ext;
 				$aem = (int)basename($file_name,".$ext"); 
 
-				$upload_file =  '/home/grapta/' . $sender . '/' . $newFileName;
-				$file_path_db = '/home/grapta/' .  $sender;
+				if ( $date_month >= 1 && $date_month <= 4 )
+				{
+					$date_month = 'ΧΕΙΜ';
+				} elseif ( $date_month >= 5 && $date_month <= 8 )
+				{
+					$date_month = 'ΕΑΡ';
+				} elseif ( $date_month >= 9 && $date_month <= 12 )
+				{
+					$date_month = 'ΣΕΠΤΕΜΒΡΙΟΣ';
+				}
 				
+				$upload_file =  '/home/grapta/' . $sender . '/' . $date_year . '/' . $date_month . '/' . $newFileName;
+				$file_path_db = '/home/grapta/' .  $sender . '/' . $date_year . '/' . $date_month;
+
+				$mk_new_file_path = '/home/grapta/' . $sender . '/' . $date_year . '/' . $date_month . '/';
+
+				$chmod_subject = '/home/grapta/' . $sender . '/';
+				$chmod_year = '/home/grapta/' . $sender . '/' . $date_year . '/';
+				$chmod_month = '/home/grapta/' . $sender . '/' . $date_year . '/' . $date_month . '/';
+
+				if (!file_exists($mk_new_file_path)) {
+					mkdir($mk_new_file_path, 0777, true);
+				}
+				
+				chmod($chmod_subject, 0777);
+				chmod($chmod_year, 0777);
+				chmod($chmod_month, 0777);
 
 				if(file_exists($upload_file))
 				{
@@ -64,6 +93,7 @@
 				else
 				{
 					move_uploaded_file($_FILES["files"]["tmp_name"][$key], $upload_file);
+					chmod($upload_file, 0777);
 					$query = "INSERT INTO user_files(file_path, file_name, date, aem, subject_id, professor_name) VALUES ('$file_path_db', '".$newFileName."', curdate(), $aem, $sender, '$professor_name')";
 					mysqli_query($connect, $query);	
 				}
