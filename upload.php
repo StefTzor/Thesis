@@ -6,7 +6,7 @@
 		$extension = array("pdf");
 		
 		$bytes = 1024;
-		$allowedKB = 1500;
+		$allowedKB = 20000;
 		$totalBytes = $allowedKB * $bytes;
 		
 		if(isset($_FILES["files"])==false)
@@ -29,18 +29,18 @@
 
 			if(!in_array(strtolower($ext),$extension))
 			{
-				array_push($errors, "Ο τύπος του αρχείο είναι λάθος. ".$file_name);
+				array_push($errors, "Ο τύπος του αρχείου είναι λάθος. ".$file_name);
 				$uploadThisFile = false;
 			}				
 			
 			if($_FILES["files"]["size"][$key] > $totalBytes){
-				array_push($errors, "Το μέγεθος κάθε αρχείου πρέπει να είναι λιγότερο από 1.5MB. ".$file_name);
+				array_push($errors, "Το μέγεθος κάθε αρχείου πρέπει να είναι λιγότερο από 20MB. ".$file_name);
 				$uploadThisFile = false;
 			}
 			
 			if(file_exists("uploads/".$_FILES["files"]["name"][$key]))
 			{
-				array_push($errors, "Το αρχέιο υπάρχει ήδη. ". $file_name);
+				array_push($errors, "Το αρχείο υπάρχει ήδη. ". $file_name);
 				$uploadThisFile = false;
 			}
 			
@@ -68,7 +68,7 @@
 				{
 					$date_month = 'ΣΕΠΤΕΜΒΡΙΟΣ';
 				}
-				
+
 				$upload_file =  '/home/grapta/' . $sender . '/' . $date_year . '/' . $date_month . '/' . $newFileName;
 				$file_path_db = '/home/grapta/' .  $sender . '/' . $date_year . '/' . $date_month;
 

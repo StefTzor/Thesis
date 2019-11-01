@@ -125,13 +125,13 @@ if ( $login->verify_session() ) {
 					<hr>
 					<form method="post" enctype="multipart/form-data" name="formUploadFile" id="uploadForm" action="upload.php">
 						<div class="form-group">
+						<p class="help-block"><span class="label label-info">Προσοχή:<br>Τα ονόματα των αρχείων πρέπει να περιέχουν μόνο τον Αριθμό Μητρώου του φοιτητή. π.χ. '2432.pdf'<br>Επιλέξτε μόνο αρχεία PDF με μέγεθος λιγότερο από 20MB.<br>Ο μέγιστος αριθμός αρχείων ανά κάθε μεταφόρτωση είναι 300.</span></p>
 							<label for="exampleInputFile">Επιλέξτε τα αρχεία που θέλετε να ανεβάσετε:</label>
 							<input type='hidden' name='sender' value='<?php echo "$sender";?>'/>
 							<input type='hidden' name='professor_name' value='<?php echo $professor_name;?>'/>
 							<input type="file" id="exampleInputFile" name="files[]" multiple="multiple" accept="application/pdf" >
-							<p class="help-block"><span class="label label-info">Σημείωση:</span> Επιλέξτε μόνο αρχεία pdf με μέγεθος λιγότερο από 1.5MB</p>
 						</div>			
-						<button type="submit" class="btn btn-primary" name="btnSubmit" >Upload</button>
+						<button type="submit" class="btn btn-primary" name="btnSubmit" >Μεταφόρτωση</button>
 					</form>
 					<br>
 					<label for="Progressbar">Πρόοδος:</label>
