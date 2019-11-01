@@ -22,6 +22,7 @@
 			table, th, td {
       			border: 1px solid black;
       			border-collapse: collapse;
+				cursor: pointer;
 				}
 				
 			th, td {
@@ -149,20 +150,24 @@
 									$file_date = 'ΣΕΠΤΕΜΒΡΙΟΣ' . " - " . $file_date_year;
 								}
 								
-								
 								$professor_name = $row["professor_name"];
-								echo "<tr data-href=$url>\r\n";
+
+								?>
+								<form style="display:none" action="viewpdf.php" method="POST" id="view_form">
+								<input type="hidden" name="url" value="<?php echo openssl_encrypt($url, "AES-128-ECB", SECRETKEY);?>" />
+								<input type="hidden" name="file_name" value="<?php echo openssl_encrypt($file_name, "AES-128-ECB", SECRETKEY);?>" />
+								</form>
+								<?php
                 				echo "<td>" . $professor_name . "</td>\r\n";
 								echo "<td>" . $file_date . "</td>\r\n";
                 				echo "</tr>\r\n";
 					?>
-								<!--<a href="<?php echo $url; ?>"><?php echo $student_aem; ?> <?php echo $student_last_name; ?> <?php echo $student_first_name; ?> <?php echo $file_date; ?><br></a>-->
 								
 								<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
                 				<script>
                     				$(document).ready(function(){
                         				$('table tr').click(function(){
-                            				window.location = $(this).data('href');
+                            				$("#view_form").submit();
                             				return false;
                         				});
                     				});
@@ -245,20 +250,25 @@
 								$student_aem = $row["aem"];
 								$student_last_name = $row["last_name"];
 								$student_first_name = $row["first_name"];
-								echo "<tr data-href=$url>\r\n";
+								?>
+								<form style="display:none" action="viewpdf.php" method="POST" id="view_form">
+								<input type="hidden" name="url" value="<?php echo openssl_encrypt($url, "AES-128-ECB", SECRETKEY);;?>" />
+								<input type="hidden" name="file_name" value="<?php echo openssl_encrypt($file_name, "AES-128-ECB", SECRETKEY);;?>" />
+								</form>
+								<?php
                 				echo "<td>" . $student_aem . "</td>\r\n";
 								echo "<td>" . $student_last_name . "</td>\r\n";
 								echo "<td>" . $student_first_name . "</td>\r\n";
 								echo "<td>" . $file_date . "</td>\r\n";
                 				echo "</tr>\r\n";
 					?>
-								<!--<a href="<?php echo $url; ?>"><?php echo $student_aem; ?> <?php echo $student_last_name; ?> <?php echo $student_first_name; ?> <?php echo $file_date; ?><br></a>-->
 								
 								<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
                 				<script>
                     				$(document).ready(function(){
                         				$('table tr').click(function(){
-                            				window.location = $(this).data('href');
+                            				//window.location = $(this).data('href');
+											$("#view_form").submit();
                             				return false;
                         				});
                     				});

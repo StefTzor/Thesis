@@ -52,15 +52,9 @@
 				$filename = basename($file_name,$ext);
 				$newFileName = $sender."_".$date."_".$filename.$ext;
 				$aem = (int)basename($file_name,".$ext"); 
-				
-				//$thumb = basename($file_name,".$ext");
-				//$thumb = $date."_".$thumb.".jpg";
-				//$thumb = dirname(__FILE__) . '/uploads/' . $thumb;
 
-				
-
-				$upload_file = dirname(__FILE__) . '/uploads/' . $sender . '/' . $newFileName;
-				$file_path_db = '/grapta/uploads/' .  $sender;
+				$upload_file =  '/home/grapta/' . $sender . '/' . $newFileName;
+				$file_path_db = '/home/grapta/' .  $sender;
 				
 
 				if(file_exists($upload_file))
@@ -73,10 +67,6 @@
 					$query = "INSERT INTO user_files(file_path, file_name, date, aem, subject_id, professor_name) VALUES ('$file_path_db', '".$newFileName."', curdate(), $aem, $sender, '$professor_name')";
 					mysqli_query($connect, $query);	
 				}
-				
-				//execute imageMagick's 'convert', setting the color space to RGB
-    			//This will create a jpg having the widthg of 200PX
-				//exec("convert ".{$upload_file}." -colorspace RGB -geometry 200 $thumb");
 						
 			}
 		}

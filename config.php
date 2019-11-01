@@ -11,3 +11,4 @@ define( 'DB_CHARSET', 'utf8mb4' );
 define( 'ABS_URL', 'http://dspai.kastoria.teiwm.gr/grapta/' );
 define( 'ADMIN_NAME', 'admin' );
 define( 'ADMIN_EMAIL', 'steftzor@students.kastoria.teiwm.gr' );
+define ("SECRETKEY", "mysecretkey1234");
