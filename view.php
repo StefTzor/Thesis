@@ -245,7 +245,22 @@
 								$file_name = $row["file_name"];
 
 								$file_date = $row["date"];
-								$file_date = formatToGreekDate($file_date);
+								$file_date_month = strtotime($file_date);
+								$file_date_month = date('m',$file_date_month);
+								$file_date_year = strtotime($file_date);
+								$file_date_year = date('Y',$file_date_year);
+								//$file_date = formatToGreekDate($file_date);
+
+								if ( $file_date_month >= 1 && $file_date_month <= 4 )
+								{
+									$file_date = 'ΧΕΙΜ' . " - " . $file_date_year;
+								} elseif ( $file_date_month >= 5 && $file_date_month <= 8 )
+								{
+									$file_date = 'ΕΑΡ' . " - " . $file_date_year;
+								} elseif ( $file_date_month >= 9 && $file_date_month <= 12 )
+								{
+									$file_date = 'ΣΕΠΤΕΜΒΡΙΟΣ' . " - " . $file_date_year;
+								}
 								
 								$student_aem = $row["aem"];
 								$student_last_name = $row["last_name"];

@@ -154,7 +154,7 @@ if ( $login->verify_session() ) {
 						<span class="close">&times;</span>
 					</div>
 					<div class="modal-body">
-						<div id="status"></div>
+						<div id="status"></div>	<!-- Return status and errors from upload attemps -->
 					</div>
 					<div class="modal-footer">
 					</div>

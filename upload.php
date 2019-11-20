@@ -86,17 +86,17 @@
 				chmod($chmod_year, 0777);
 				chmod($chmod_month, 0777);
 
-				if(file_exists($upload_file))
+				/*if(file_exists($upload_file))
 				{
 					array_push($errors, "To αρχείο" . " '" . $file_name . "' " . "υπάρχει ήδη");			
 				}
 				else
-				{
+				{	*/
 					move_uploaded_file($_FILES["files"]["tmp_name"][$key], $upload_file);
 					chmod($upload_file, 0777);
 					$query = "INSERT INTO user_files(file_path, file_name, date, aem, subject_id, professor_name) VALUES ('$file_path_db', '".$newFileName."', curdate(), $aem, $sender, '$professor_name')";
 					mysqli_query($connect, $query);	
-				}
+				//}
 						
 			}
 		}
@@ -107,7 +107,7 @@
 		
 		if($count != 0){
 			foreach($errors as $error){
-				echo $error."<br/>";
+				echo $error."<br/>";	//Send errors to the upload form.
 			}
 		}		
 	} else {
