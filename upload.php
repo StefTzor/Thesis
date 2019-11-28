@@ -61,13 +61,20 @@
 				if ( $date_month >= 1 && $date_month <= 4 )
 				{
 					$date_month = 'ΧΕΙΜ';
+					$exam_period = 1;
 				} elseif ( $date_month >= 5 && $date_month <= 8 )
 				{
 					$date_month = 'ΕΑΡ';
+					$exam_period = 2;
 				} elseif ( $date_month >= 9 && $date_month <= 12 )
 				{
 					$date_month = 'ΣΕΠΤΕΜΒΡΙΟΣ';
+					$exam_period = 3;
 				}
+
+				$filename = basename($file_name,$ext);
+				$newFileName = $sender."_".$date_year."-".$exam_period."_".$filename.$ext;
+				$aem = (int)basename($file_name,".$ext"); 
 
 				$upload_file =  '/home/grapta/' . $sender . '/' . $date_year . '/' . $date_month . '/' . $newFileName;
 				$file_path_db = '/home/grapta/' .  $sender . '/' . $date_year . '/' . $date_month;
@@ -86,17 +93,25 @@
 				chmod($chmod_year, 0777);
 				chmod($chmod_month, 0777);
 
-				/*if(file_exists($upload_file))
+				if(file_exists($upload_file))
 				{
-					array_push($errors, "To αρχείο" . " '" . $file_name . "' " . "υπάρχει ήδη");			
+					//array_push($errors, "To αρχείο" . " '" . $file_name . "' " . "υπάρχει ήδη");
+					//Delete file record from the database
+					$delete_query = "DELETE FROM user_files WHERE file_name='$newFileName'";
+					mysqli_query($connect, $delete_query);	
+
+					move_uploaded_file($_FILES["files"]["tmp_name"][$key], $upload_file);
+					chmod($upload_file, 0777);
+					$query = "INSERT INTO user_files(file_path, file_name, date, aem, subject_id, professor_name) VALUES ('$file_path_db', '".$newFileName."', curdate(), $aem, $sender, '$professor_name')";
+					mysqli_query($connect, $query);				
 				}
 				else
-				{	*/
+				{	
 					move_uploaded_file($_FILES["files"]["tmp_name"][$key], $upload_file);
 					chmod($upload_file, 0777);
 					$query = "INSERT INTO user_files(file_path, file_name, date, aem, subject_id, professor_name) VALUES ('$file_path_db', '".$newFileName."', curdate(), $aem, $sender, '$professor_name')";
 					mysqli_query($connect, $query);	
-				//}
+				}
 						
 			}
 		}

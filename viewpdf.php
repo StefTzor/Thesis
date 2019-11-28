@@ -3,8 +3,11 @@
 require_once("load.php");
 
 // Store the file name into variable 
-$file = openssl_decrypt($_POST['url'], "AES-128-ECB", SECRETKEY);;
-$filename = openssl_decrypt($_POST['file_name'], "AES-128-ECB", SECRETKEY);;
+$file = openssl_decrypt($_POST['url'], "AES-128-ECB", SECRETKEY);
+$filename = openssl_decrypt($_POST['file_name'], "AES-128-ECB", SECRETKEY);
+
+// Quick check to verify that the file exists
+if( !file_exists($file) ) die("File not found");
   
 // Header content type 
 header('Content-type: application/pdf'); 
