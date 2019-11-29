@@ -39,7 +39,7 @@ if ( $login->verify_session() ) {
             $subjects = $db->query("SELECT * FROM subjects");
             echo "<table><tbody><tr><th>Εξάμηνο</th><th>Μάθημα</th></tr>\r\n";
             foreach ($subjects as $result) {
-                echo "<tr data-href='$result->id.php?subject=$result->name'>\r\n";
+                echo "<tr data-href='upload_form.php?id=$result->id&subject=$result->name'>\r\n";
                 echo "<td>" . $result->semester . "</td>\r\n";
                 echo "<td>" . $result->name . "</td>\r\n";
                 echo "</tr>\r\n";

@@ -15,9 +15,9 @@ if ( $login->verify_session() ) {
     if ( $userType == 'student' )
     {
 		include('header.php'); 
-		$sender = __FILE__;
-		$sender=(int)basename($sender,".php");
+		$sender = $_GET['id'];
 		$subject_name = $_GET['subject'];
+		ChromePhp::log($sender, $subject_name);
 		?>
         <div class="wrapper text-center">
             <h2><?php echo $subject_name; ?></h2>
@@ -28,9 +28,9 @@ if ( $login->verify_session() ) {
 		include('footer.php');
     } elseif ( $userType == 'professor' ) {
 		include('header.php'); 
+		$sender = $_GET['id'];
 		$subject_name = $_GET['subject'];
-		$sender = __FILE__;
-		$sender=(int)basename($sender,".php");
+		ChromePhp::log($sender, $subject_name);
 		?>
         <div class="wrapper text-center">
             <h2><?php echo $subject_name; ?></h2>
