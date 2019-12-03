@@ -38,11 +38,11 @@
 				$uploadThisFile = false;
 			}
 			
-			if(file_exists("uploads/".$_FILES["files"]["name"][$key]))
+			/*if(file_exists("uploads/".$_FILES["files"]["name"][$key]))
 			{
 				array_push($errors, "Το αρχείο υπάρχει ήδη. ". $file_name);
 				$uploadThisFile = false;
-			}
+			} */
 			
 			if($uploadThisFile){
 				if(isset($_POST['sender'])) $sender=$_POST['sender'];

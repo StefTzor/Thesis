@@ -200,9 +200,10 @@
                                     <?php
                                     foreach ($search as $result) {
                                         $url = $result->file_path . "/". $result->file_name;
-                                    
+                                        $url_encrypted = urlencode(base64_encode($url));
                                         $file_name = $result->file_name;
-                                    
+                                        $file_name_encrypted = urlencode(base64_encode($file_name));
+
                                         $file_date = $result->date;
                                     
 		            			    	$file_date_month = strtotime($file_date);
@@ -226,10 +227,7 @@
                                         $professor_name = $result->professor_name;
                                     
                                         ?>
-                                        <form style="display:none" action="viewpdf.php" method="POST" id="view_form">
-		            			    	<input type="hidden" name="url" value="<?php echo openssl_encrypt($url, "AES-128-ECB", SECRETKEY);;?>" />
-		            			    	<input type="hidden" name="file_name" value="<?php echo openssl_encrypt($file_name, "AES-128-ECB", SECRETKEY);;?>" />
-		            			    	</form>
+                                        <tr data-href='viewpdf.php?url=<?php echo $url_encrypted; ?>&name=<?php echo $file_name_encrypted; ?>'>
 		            			    	<?php
                             	    	echo "<td>" . $student_aem . "</td>\r\n";
 		            			    	echo "<td>" . $student_last_name . "</td>\r\n";
@@ -252,12 +250,12 @@
 		</div>
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
         <script>
-            $(document).ready(function(){
-                $('table tr').click(function(){
-                    $("#view_form").submit();
-                        return false;
-                });
-            });
+        	$(document).ready(function(){
+        		$('table tr').click(function(){
+        			window.location = $(this).data('href');
+        	 		return false;
+        		});
+        	});
         </script>
         <?php
         

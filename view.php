@@ -130,7 +130,9 @@
 							while($row = mysqli_fetch_assoc($result))
 							{
 								$url = $row["file_path"]."/".$row["file_name"];
+								$url_encrypted = urlencode(base64_encode($url));	
 								$file_name = $row["file_name"];
+								$file_name_encrypted = urlencode(base64_encode($file_name));
 
 								$file_date = $row["date"];
 								$file_date_month = strtotime($file_date);
@@ -152,11 +154,9 @@
 								
 								$professor_name = $row["professor_name"];
 
+								
 								?>
-								<form style="display:none" action="viewpdf.php" method="POST" id="view_form">
-								<input type="hidden" name="url" value="<?php echo openssl_encrypt($url, "AES-128-ECB", SECRETKEY);?>" />
-								<input type="hidden" name="file_name" value="<?php echo openssl_encrypt($file_name, "AES-128-ECB", SECRETKEY);?>" />
-								</form>
+								<tr data-href='viewpdf.php?url=<?php echo $url_encrypted; ?>&name=<?php echo $file_name_encrypted; ?>'>
 								<?php
                 				echo "<td>" . $professor_name . "</td>\r\n";
 								echo "<td>" . $file_date . "</td>\r\n";
@@ -165,13 +165,13 @@
 								
 								<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
                 				<script>
-                    				$(document).ready(function(){
-                        				$('table tr').click(function(){
-                            				$("#view_form").submit();
-                            				return false;
-                        				});
-                    				});
-                				</script>
+                    			$(document).ready(function(){
+                        			$('table tr').click(function(){
+                            			window.location = $(this).data('href');
+                           		 		return false;
+                        			});
+                    			});
+                			</script>
 					
 					<?php
 							}
@@ -226,10 +226,12 @@
 						WHERE user_files.subject_id='$sender'
 						ORDER BY date desc,students.aem desc";
 
-						$result = mysqli_query($connect, $query);
+						//$result = mysqli_query($connect, $query);
+
+						$result = $db->query($query);
 						
-						if(mysqli_num_rows($result) > 0)
-						{
+						//if($result->fetchColumn() > 0)
+						//{
 							?>
 							
 							<input type="text" id="myInput" onkeyup="myFunction()" placeholder="Αναζήτηση">
@@ -239,12 +241,14 @@
 							<tr class="header">
 							<?php
 							echo "<th>Α.Ε.Μ.</th><th>Επώνυμο</th><th>Όνομα</th><th>Ημερομηνία</th></tr>\r\n";
-							while($row = mysqli_fetch_assoc($result))
+							foreach ($result as $row)
 							{
-								$url = $row["file_path"]."/".$row["file_name"];
-								$file_name = $row["file_name"];
+								$url = $row->file_path . "/" . $row->file_name;
+								$url_encrypted = urlencode(base64_encode($url));
+								$file_name = $row->file_name;
+								$file_name_encrypted = urlencode(base64_encode($file_name));
 
-								$file_date = $row["date"];
+								$file_date = $row->date;
 								$file_date_month = strtotime($file_date);
 								$file_date_month = date('m',$file_date_month);
 								$file_date_year = strtotime($file_date);
@@ -262,37 +266,35 @@
 									$file_date = 'ΣΕΠΤΕΜΒΡΙΟΣ' . " - " . $file_date_year;
 								}
 								
-								$student_aem = $row["aem"];
-								$student_last_name = $row["last_name"];
-								$student_first_name = $row["first_name"];
+								$student_aem = $row->aem;
+								$student_last_name = $row->last_name;
+								$student_first_name = $row->first_name;
+
 								?>
-								<form style="display:none" action="viewpdf.php" method="POST" id="view_form">
-								<input type="hidden" name="url" value="<?php echo openssl_encrypt($url, "AES-128-ECB", SECRETKEY);;?>" />
-								<input type="hidden" name="file_name" value="<?php echo openssl_encrypt($file_name, "AES-128-ECB", SECRETKEY);;?>" />
-								</form>
+								<tr data-href='viewpdf.php?url=<?php echo $url_encrypted; ?>&name=<?php echo $file_name_encrypted; ?>'>
 								<?php
                 				echo "<td>" . $student_aem . "</td>\r\n";
 								echo "<td>" . $student_last_name . "</td>\r\n";
 								echo "<td>" . $student_first_name . "</td>\r\n";
 								echo "<td>" . $file_date . "</td>\r\n";
-                				echo "</tr>\r\n";
-					?>
-								
-								<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
-                				<script>
-                    				$(document).ready(function(){
-                        				$('table tr').click(function(){
-                            				//window.location = $(this).data('href');
-											$("#view_form").submit();
-                            				return false;
-                        				});
-                    				});
-                				</script>
+								?>
+                				</tr>
 					
-					<?php
+								<?php
 							}
+							
 							echo "</tbody></table>\r\n";
 							?>
+							<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+							<script>
+                    			$(document).ready(function(){
+                        			$('table tr').click(function(){
+                            			window.location = $(this).data('href');
+                           		 		return false;
+                        			});
+                    			});
+                			</script>
+
 							<script>
 							function filterTable(event) {
 							    var filter = event.target.value.toUpperCase();
@@ -313,13 +315,13 @@
 							document.querySelector('#myInput').addEventListener('keyup', filterTable, false);
 							</script>
 							<?php
-						}
-						else
-						{
+						//}
+						//else
+						//{
 					?>
 						<p>Δεν υπάρχουν αποθηκευμένα γραπτά.</p>
 					<?php
-						}
+						//}
 					?>					
 				</div>
 			</div>

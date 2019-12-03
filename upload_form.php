@@ -17,7 +17,6 @@ if ( $login->verify_session() ) {
 		include('header.php'); 
 		$sender = $_GET['id'];
 		$subject_name = $_GET['subject'];
-		ChromePhp::log($sender, $subject_name);
 		?>
         <div class="wrapper text-center">
             <h2><?php echo $subject_name; ?></h2>
@@ -30,7 +29,6 @@ if ( $login->verify_session() ) {
 		include('header.php'); 
 		$sender = $_GET['id'];
 		$subject_name = $_GET['subject'];
-		ChromePhp::log($sender, $subject_name);
 		?>
         <div class="wrapper text-center">
             <h2><?php echo $subject_name; ?></h2>
