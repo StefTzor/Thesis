@@ -230,8 +230,8 @@
 
 						$result = $db->query($query);
 						
-						//if($result->fetchColumn() > 0)
-						//{
+						if(!empty($result))
+						{
 							?>
 							
 							<input type="text" id="myInput" onkeyup="myFunction()" placeholder="Αναζήτηση">
@@ -315,13 +315,13 @@
 							document.querySelector('#myInput').addEventListener('keyup', filterTable, false);
 							</script>
 							<?php
-						//}
-						//else
-						//{
+						}
+						else
+						{
 					?>
 						<p>Δεν υπάρχουν αποθηκευμένα γραπτά.</p>
 					<?php
-						//}
+						}
 					?>					
 				</div>
 			</div>
