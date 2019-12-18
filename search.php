@@ -93,7 +93,7 @@ if ( $login->verify_session() ) {
             <br><input type="submit" class="search" name="btnSearch" value="Αναζήτηση">
         </form>
     </div>
-    <?php include('footer.php');
+    <?php
 } else {
     include( 'login.php' );
 }

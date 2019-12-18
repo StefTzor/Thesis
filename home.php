@@ -16,7 +16,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST") {
         <h2>Καλωσήρθατε  <?php echo $user->username;?></h2>
         <p><a href="logout.php">Αποσύνδεση</a></p>
     </div>
-    <?php include('footer.php');
+    <?php 
 
 } else {
     include( 'login.php' );

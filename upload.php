@@ -8,6 +8,8 @@
 		$bytes = 1024;
 		$allowedKB = 20000;
 		$totalBytes = $allowedKB * $bytes;
+
+		ChromePhp::log("Made it here");
 		
 		if(isset($_FILES["files"])==false)
 		{
@@ -20,6 +22,7 @@
 		
 		foreach($_FILES["files"]["tmp_name"] as $key=>$tmp_name)
 		{
+			ChromePhp::log("Made it to foreach");
 			$uploadThisFile = true;
 			
 			$file_name=$_FILES["files"]["name"][$key];
@@ -30,11 +33,13 @@
 			if(!in_array(strtolower($ext),$extension))
 			{
 				array_push($errors, "Ο τύπος του αρχείου είναι λάθος. ".$file_name);
+				ChromePhp::log("Not uploaded because of error #".$_FILES["files"]["error"]);
 				$uploadThisFile = false;
 			}				
 			
 			if($_FILES["files"]["size"][$key] > $totalBytes){
 				array_push($errors, "Το μέγεθος κάθε αρχείου πρέπει να είναι λιγότερο από 20MB. ".$file_name);
+				ChromePhp::log("Not uploaded because of error #".$_FILES["files"]["error"]);
 				$uploadThisFile = false;
 			}
 			
@@ -103,14 +108,16 @@
 					move_uploaded_file($_FILES["files"]["tmp_name"][$key], $upload_file);
 					chmod($upload_file, 0777);
 					$query = "INSERT INTO user_files(file_path, file_name, date, aem, subject_id, professor_name) VALUES ('$file_path_db', '".$newFileName."', curdate(), $aem, $sender, '$professor_name')";
-					mysqli_query($connect, $query);				
+					mysqli_query($connect, $query);
+					ChromePhp::log("Not uploaded because of error #".$_FILES["files"]["error"]);				
 				}
 				else
 				{	
 					move_uploaded_file($_FILES["files"]["tmp_name"][$key], $upload_file);
 					chmod($upload_file, 0777);
 					$query = "INSERT INTO user_files(file_path, file_name, date, aem, subject_id, professor_name) VALUES ('$file_path_db', '".$newFileName."', curdate(), $aem, $sender, '$professor_name')";
-					mysqli_query($connect, $query);	
+					mysqli_query($connect, $query);
+					ChromePhp::log("Not uploaded because of error #".$_FILES["files"]["error"]);	
 				}
 						
 			}
@@ -126,6 +133,7 @@
 			}
 		}		
 	} else {
+		ChromePhp::log("Else Error");
 		include( 'login.php' );
 	}
 ?>
