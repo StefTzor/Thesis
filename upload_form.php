@@ -24,7 +24,6 @@ if ( $login->verify_session() ) {
         </div>
 		<?php
 		include('view.php');
-		include('footer.php');
     } elseif ( $userType == 'professor' ) {
 		include('header.php'); 
 		$sender = $_GET['id'];
@@ -123,7 +122,7 @@ if ( $login->verify_session() ) {
 					<hr>
 					<form method="post" enctype="multipart/form-data" name="formUploadFile" id="uploadForm" action="upload.php">
 						<div class="form-group">
-						<p class="help-block"><span class="label label-info">Προσοχή:<br>Τα ονόματα των αρχείων πρέπει να περιέχουν μόνο τον Αριθμό Μητρώου του φοιτητή. π.χ. '2432.pdf'<br>Επιλέξτε μόνο αρχεία PDF.<br>Ο μέγιστος αριθμός αρχείων ανά κάθε μεταφόρτωση είναι 300 και 40Mb.</span></p>
+						<p class="help-block"><span class="label label-info">Προσοχή:<br>Τα ονόματα των αρχείων πρέπει να περιέχουν μόνο τον Αριθμό Μητρώου του φοιτητή. π.χ. '2432.pdf'<br>Επιλέξτε μόνο αρχεία PDF.<br>Ο μέγιστος αριθμός αρχείων ανά κάθε μεταφόρτωση είναι 300 και 40MB.</span></p>
 							<label for="exampleInputFile">Επιλέξτε τα αρχεία που θέλετε να ανεβάσετε:</label>
 							<input type='hidden' name='sender' value='<?php echo "$sender";?>'/>
 							<input type='hidden' name='professor_name' value='<?php echo $professor_name;?>'/>
