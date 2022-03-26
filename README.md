@@ -2,5 +2,5 @@
 
 This thesis presents the design and implementation of a web-based system used for the archiving of student’s examination papers by the professors in an academic institute, while also having the ability to display said examination paper to a student. Prior to this system, the professor had to assess the examination paper and manually archive it, but when it was necessary to display it to a student, it required certain communication between the two parties to set up a physical meeting and also, a lot of time for search and retrieval. The reasons behind the development of the system were, the results and findings that were noticed after a poll was carried out to students and professors. In the particular thesis, this process is automated by implementing an online platform where professors and students alike log into it, thus, improving the previous situation and time spent on this rigorous process. For the implementation of the platform, an appropriate database was designed along with an archiving system, all the functions of the system were employed in a user-friendly web interface. Modern mechanics of web development were used, while also taking into consideration the essential security mechanisms. The system was successfully implemented in the Department of Informatics of University of Western Macedonia, Greece during the period 2019-2020.
 
-Deployment: http://dspai.kastoria.teiwm.gr/grapta  
-Thesis Document: https://anaktisis.uowm.gr/10583
+Deployment: dspai.kastoria.teiwm.gr/grapta  
+Thesis Document: anaktisis.uowm.gr/10583
